@@ -1,0 +1,355 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Tutorial for Services_YouTube</title>
+    <style type="text/css">
+      html { margin: 0em 0em; padding 0em 0em; background: #cccccc none; }
+      body { margin: 1em 3em; padding 0em 0em; background: #cccccc none; color: #111111;
+            font-style: normal; font-weight: normal; }
+      h1 { margin-top: 0.8em; margin-bottom: 0.5em; font-weight: bold; }
+      h2 { margin-top: 1.8em; margin-bottom: 1.1em; font-weight: bold;
+           border-left: solid 0.6em #884455; border-bottom: solid 1pt #888888;
+           padding: 0.5em 0.5em; width: 60%; }
+      h3 { margin-top: 1.8em; margin-bottom: 0.8em; font-weight: bold; }
+      hr { margin-top: 2.5em; margin-bottom: 1.5em; height: 1pt;
+           color: #999999; background-color: #999999; border: none; }
+     pre { border: thin solid; padding: 1em; background: #ffffff none; overflow:auto; }
+    </style>
+  </head>
+  <body>
+    <h1>Tutorial for Services_YouTube</h1>
+
+    <h2>Introduction</h2>
+    <div>Introduction to Services_YouTube</div>
+    <div>Services_YouTube is an abstraction for the webservice of YouTube APIs. Using YouTube APIs, you can easily integrate online videos from YouTube's rapidly growing repository of videos into your application. To use YouTube API and this package, create a YouTube account and create a YouTube developer profile.</div>
+    <div>YouTube APIs currently allow read-only access to key parts of the YouTube video respository and user community. Services_YouTube provides functions for YouTube APIs using O-O abstraction access.</div>
+    <h2>API</h2>
+    <h3>Constructor</h3>
+    <div>Constructor.</div>
+    <pre><code>
+    $youtube = new Services_YouTube($dev_id);
+    </code></pre>
+    <div>$dev_id is the developper ID of the youtube.com.</div>
+    <pre><code>
+    $youtube = new Services_YouTube($dev_id, array('useCache'       =&gt; false,
+                                                 'cacheOptions'   =&gt; array(),
+                                                 'responseFormat' =&gt; 'object',
+                                                 'driver'         =&gt; 'rest'));
+    </code></pre>
+    <div>You can set the options using hash in the seconde arguments. Currently, there are 4 options you can set.</div>
+    <dl>
+      <dt>useCache</dt>
+      <dd>
+      This option set the config of using Cache or not. If the value is true, use Cache_Lite to receive the result of the YouTube API. Then you need Cache_Lite installed. The default value is false.
+      </dd>
+      <dt>cacheOptions</dt>
+      <dd>
+      This option is the same option of the Cache_Lite. If the value useCache is false, setting this option does nothing. The default value is array().
+      </dd>
+      <dt>responseFormat</dt>
+      <dd>
+      This option set the config of the response of the API to be SimpleXMLElement or array. Set the option value either "object", or "array". The default value is "object". That mean, you receive the SimpleXMLElement tree.
+      </dd>
+      <dt>driver</dt>
+      <dd>
+      This option set the approach to use YouTube APIs. YouTube APIs support REST and XML-RPC approach. Set the option value either "rest", or "xmlrpc". The default value is "rest". If you preffered using XML-RPC approach, set "xmlrpc" in this option value. Then you need XML/RPC2 installed.
+      </dd>
+    </dl>
+    <hr />
+    <h3>User Information</h3>
+    <h4>getProfile</h4>
+    <div>Retrieves the public parts of a user profile. This method call youtube.users.get_profile function</div>
+  <pre><code>
+  $userProfile = $youtube-&gt;getProfile($user);
+  </code></pre>
+    <div>The argument, $user is the user id of the youtube.com. If the $user exists, the response is the following XML parsed by SimpleXMLElement or array. It depends on the responseFormat option.</div>
+    <code><pre>
+&lt;user_profile&gt;
+  &lt;first_name&gt;Bob&lt;/first_name&gt;
+  &lt;last_name&gt;Jones&lt;/last_name&gt;
+  &lt;about_me&gt;This is my profile&lt;/about_me&gt;
+  &lt;age&gt;29&lt;/age&gt;
+  &lt;video_upload_count&gt;7&lt;/video_upload_count&gt;
+  &lt;ideo_watch_count&gt;16&lt;/video_watch_count&gt;
+  &lt;homepage&gt;http://www.myhomepage.com/&lt;/homepage&gt;
+  &lt;hometown&gt;Los Angeles, CA&lt;/hometown&gt;
+  &lt;gender&gt;m&lt;/gender&gt; &lt;!-- m or f --&gt;
+  &lt;occupations&gt;Abstract Artist&lt;/occupations&gt;
+  &lt;companies&gt;YouTube&lt;/companies&gt;
+  &lt;city&gt;San Francisco, CA&lt;/city&gt;
+  &lt;country&gt;US&lt;/country&gt;
+  &lt;books&gt;Learning Python&lt;/books&gt;
+  &lt;obbies&gt;YouTube, YouTube, YouTube&lt;/hobbies&gt;
+  &lt;movies&gt;Star Wars Original Trilogy&lt;/movies&gt;
+  &lt;relationship&gt;taken&lt;/relationship&gt; &lt;!-- single, taken, or open --&gt;
+  &lt;friend_count&gt;5&lt;/friend_count&gt;
+  &lt;favorite_video_count&gt;15&lt;/favorite_video_count&gt;
+  &lt;urrently_on&gt;false&lt;/currently_on&gt;
+&lt;user_profile&gt;
+  </pre></code>
+    <div>If the $user does not exist, throw Services_YouTube_Exception.</div>
+
+    <h4>listFavoriteVideos</h4>
+    <div>Lists a user's favorite videos. This method call youtube.users.list_favorite_videos function</div>
+  <pre><code>
+  $videos = $youtube-&gt;listFavoriteVideos($user);
+  </code></pre>
+    <div>The argument, $user is the user id of the youtube.com. If the $user exists, the response is the following XML parsed by SimpleXMLElement or array. It depends on the responseFormat option.</div>
+    <code><pre>
+&lt;video_list&gt;
+  &lt;video&gt;
+    &lt;author&gt;youtuberocks&lt;/author&gt;
+    &lt;id&gt;k0gEeue2sLk&lt;/id&gt;   &lt;!-- this ID can be used with youtube.videos.get_details --&gt;
+    &lt;title&gt;My First Motion Picture&lt;/title&gt;
+    &lt;length_seconds&gt;16&lt;/length_seconds&gt;  &lt;!-- length of video --&gt;
+    &lt;rating_avg&gt;3.75&lt;/rating_avg&gt;
+    &lt;rating_count&gt;10&lt;/rating_count&gt;
+    &lt;description&gt;This is the video description shown on the YouTube site.&lt;/description&gt;
+    &lt;view_count&gt;170&lt;/view_count&gt;
+    &lt;upload_time&gt;1121398533&lt;/upload_time&gt;  &lt;!-- UNIX-style time, secs since 1/1/1970 --&gt;
+    &lt;comment_count&gt;1&lt;/comment_count&gt; &lt;!-- how many comments does this video have? --&gt;
+    &lt;tags&gt;feature film documentary&lt;/tags&gt;
+    &lt;url&gt;http://www.youtube.com/watch?v=k04Eeue24Lk&lt;/url&gt;
+    &lt;thumbnail_url&gt;http://static.youtube.com/get_still?video_id=k04Eeue24Lk&lt;/thumbnail_url&gt;
+  &lt;/video&gt;
+  &lt;video&gt;
+... another video ...
+  &lt;/video&gt;
+&lt;/video_list&gt;
+  </pre></code>
+    <div>If the $user does not exist, throw Services_YouTube_Exception.</div>
+
+    <h4>listFriends</h4>
+    <div>Lists a user's friends. This method call youtube.users.list_friends function</div>
+  <pre><code>
+    $friends = $youtube-&gt;listFriends($user);
+  </code></pre>
+    <div>The argument, $user, is the user id of the youtube.com. If the $user exists, the response is the following XML parsed by SimpleXMLElement or array. It depends on the responseFormat option.</div>
+  <pre><code>
+&lt;friend_list&gt;
+  &lt;friend&gt;
+    &lt;user&gt;username1&lt;/user&gt;
+    &lt;video_upload_count&gt;1&lt;/video_upload_count&gt;
+    &lt;favorite_count&gt;2&lt;/favorite_count&gt;
+    &lt;friend_count&gt;3&lt;/friend_count&gt;
+  &lt;/friend&gt;
+  &lt;friend&gt;
+    &lt;user&gt;username2&lt;/user&gt;
+    &lt;video_upload_count&gt;5&lt;/video_upload_count&gt;
+    &lt;favorite_count&gt;3&lt;/favorite_count&gt;
+    &lt;friend_count&gt;2&lt;/friend_count&gt;
+  &lt;/friend&gt;
+... and more ...
+&lt;/friend_list&gt;
+  </code></pre>
+    <div>If the $user does not exist, throw Services_YouTube_Exception.</div>
+    <hr />
+
+
+    <h3>Video Viewing</h3>
+    <h4>getDetails</h4>
+    <div>Displays the details for a video. This method call youtube.videos.get_details function</div>
+  <pre><code>
+  $video = $youtube-&gt;getDetails($video);
+  </code></pre>
+    <div>The argument $video is the video id of the youtube.com. If the $video exists, the response is the following XML parsed by SimpleXMLElement or array. It depends on the responseFormat option.</div>
+  <pre><code>
+&lt;video_details&gt;
+  &lt;author&gt;youtubeuser&lt;/author&gt;
+  &lt;title&gt;My Trip to California&lt;/title&gt;
+  &lt;rating_avg&gt;3.25&lt;/rating_avg&gt;
+  &lt;rating_count&gt;10&lt;/rating_count&gt;
+  &lt;tags&gt;california trip redwoods&lt;/tags&gt;
+  &lt;description&gt;This video shows some highlights of my trip to California last year.&lt;/description&gt;
+  &lt;update_time&gt;1129803584&lt;/update_time&gt;  &lt;!-- UNIX time, secs since 1/1/70 --&gt;
+  &lt;view_count&gt;7&lt;/view_count&gt;
+  &lt;upload_time&gt;1127760809&lt;/upload_time&gt;  &lt;!-- UNIX time, secs since 1/1/70 --&gt;
+  &lt;length_seconds&gt;8&lt;/length_seconds&gt;
+  &lt;recording_date&gt;None&lt;/recording_date&gt;
+  &lt;recording_location/&gt;
+  &lt;recording_country/&gt;
+  &lt;comment_list&gt;
+    &lt;comment&gt;
+      &lt;author&gt;steve&lt;/author&gt;
+      &lt;text&gt;asdfasdf&lt;/text&gt;
+      &lt;time&gt;1129773022&lt;/time&gt;
+    &lt;/comment&gt;
+  &lt;/comment_list&gt;
+  &lt;channel_list&gt;
+    &lt;channel&gt;Humor&lt;/channel&gt;
+      &lt;channel&gt;Odd &amp; Outrageous&lt;/channel&gt;
+    &lt;/channel_list&gt;
+  &lt;thumbnail_url&gt;http://static205.youtube.com/vi/bkZHmZmZUJk/2.jpg&lt;/thumbnail_url&gt;
+&lt;/video_details&gt;
+  </code></pre>
+    <div>If the $video does not exist, throw Services_YouTube_Exception.</div>
+
+    <h4>listByTag</h4>
+    <div>Lists all videos that have the specified tag. This method call youtube.videos.list_by_tag function</div>
+  <pre><code>
+    $videos = $youtube-&gt;listByTag($tagsSepratedBySpace, $page, $perPage)
+  </code></pre>
+    <div>The argument, $tagsSeparatedBySpace is the tags list separated_by_spaces. $page is the "page" of the result(default:1). $perPage is the number of the results of one page(default:20, maximum 100). The response is the following XML parsed by SimpleXMLElement or array. It depends on the responseFormat option.</div>
+  <pre><code>
+&lt;video_list&gt;
+  &lt;video&gt;
+    &lt;author&gt;youtuberocks&lt;/author&gt;
+    &lt;id&gt;k0gEeue2sLk&lt;/id&gt;   &lt;!-- this ID can be used with youtube.videos.get_details --&gt;
+    &lt;title&gt;My First Motion Picture&lt;/title&gt;
+    &lt;length_seconds&gt;16&lt;/length_seconds&gt;  &lt;!-- length of video --&gt;
+    &lt;rating_avg&gt;3.75&lt;/rating_avg&gt;
+    &lt;rating_count&gt;10&lt;/rating_count&gt;
+    &lt;description&gt;This is the video description shown on the YouTube site.&lt;/description&gt;
+    &lt;view_count&gt;170&lt;/view_count&gt;
+    &lt;upload_time&gt;1121398533&lt;/upload_time&gt;  &lt;!-- UNIX-style time, secs since 1/1/1970 --&gt;
+    &lt;comment_count&gt;1&lt;/comment_count&gt;  &lt;!-- how many comments does this video have? --&gt;
+    &lt;tags&gt;feature film documentary&lt;/tags&gt;
+    &lt;url&gt;http://www.youtube.com/watch?v=k04Eeue24Lk&lt;/url&gt;
+    &lt;thumbnail_url&gt;http://static.youtube.com/get_still?video_id=k04Eeue24Lk&lt;/thumbnail_url&gt;
+  &lt;/video&gt;
+  &lt;video&gt;
+... another video ...
+  &lt;/video&gt;
+&lt;/video_list&gt;
+  </code></pre>
+    <div>If the $perPage is bigger than 100, throw Services_YouTube_Exception. </div>
+
+    <h4>listByUser</h4>
+    <div>Lists all videos that were uploaded by the specified user. This method call youtube.videos.list_by_user function</div>
+<pre><code>
+    $videos = $youtube-&gt;listByUser($user);
+  </code></pre>
+    <div>The argument, $user, is the user id of the youtube.com. If the $user exists, the response is the following XML parsed by SimpleXMLElement or array. It depends on the responseFormat option.</div>
+<pre><code>
+&lt;video_list&gt;
+  &lt;video&gt;
+    &lt;author&gt;youtuberocks&lt;/author&gt;
+    &lt;id&gt;k0gEeue2sLk&lt;/id&gt;   &lt;!-- this ID can be used with youtube.videos.get_details --&gt;
+    &lt;title&gt;My First Motion Picture&lt;/title&gt;
+    &lt;length_seconds&gt;16&lt;/length_seconds&gt;  &lt;!-- length of video --&gt;
+    &lt;rating_avg&gt;3.75&lt;/rating_avg&gt;
+    &lt;rating_count&gt;10&lt;/rating_count&gt;
+    &lt;description&gt;This is the video description shown on the YouTube site.&lt;/description&gt;
+    &lt;view_count&gt;170&lt;/view_count&gt;
+    &lt;upload_time&gt;1121398533&lt;/upload_time&gt;  &lt;!-- UNIX-style time, secs since 1/1/1970 --&gt;
+    &lt;comment_count&gt;1&lt;/comment_count&gt;  &lt;!-- how many comments does this video have? --&gt;
+    &lt;tags&gt;feature film documentary&lt;/tags&gt;
+    &lt;url&gt;http://www.youtube.com/watch?v=k04Eeue24Lk&lt;/url&gt;
+    &lt;thumbnail_url&gt;http://static.youtube.com/get_still?video_id=k04Eeue24Lk&lt;/thumbnail_url&gt;
+  &lt;/video&gt;
+  &lt;video&gt;
+... another video ...
+  &lt;/video&gt;
+&lt;/video_list&gt;
+  </pre></code>
+    <div>If the $user does not exist, throw Services_YouTube_Exception.</div>
+    <h4>listFeatured</h4>
+    <div>Lists all videos that were uploaded by the specified user. This method call youtube.videos.list_featured function</div>
+<pre><code>
+    $videos = $youtube-&gt;listFeatured();
+  </code></pre>
+    <div>The response is the following XML parsed by SimpleXMLElement or array. It depends on the responseFormat option.</div>
+<pre><code>
+&lt;video_list&gt;
+  &lt;video&gt;
+    &lt;author&gt;youtuberocks&lt;/author&gt;
+    &lt;id&gt;k0gEeue2sLk&lt;/id&gt;   &lt;!-- this ID can be used with youtube.videos.get_details --&gt;
+    &lt;title&gt;My First Motion Picture&lt;/title&gt;
+    &lt;length_seconds&gt;16&lt;/length_seconds&gt;  &lt;!-- length of video --&gt;
+    &lt;rating_avg&gt;3.75&lt;/rating_avg&gt;
+    &lt;rating_count&gt;10&lt;/rating_count&gt;
+    &lt;description&gt;This is the video description shown on the YouTube site.&lt;/description&gt;
+    &lt;view_count&gt;170&lt;/view_count&gt;
+    &lt;upload_time&gt;1121398533&lt;/upload_time&gt;  &lt;!-- UNIX-style time, secs since 1/1/1970 --&gt;
+    &lt;comment_count&gt;1&lt;/comment_count&gt;  &lt;!-- how many comments does this video have? --&gt;
+    &lt;tags&gt;feature film documentary&lt;/tags&gt;
+    &lt;url&gt;http://www.youtube.com/watch?v=k04Eeue24Lk&lt;/url&gt;
+    &lt;thumbnail_url&gt;http://static.youtube.com/get_still?video_id=k04Eeue24Lk&lt;/thumbnail_url&gt;
+  &lt;/video&gt;
+  &lt;video&gt;
+... another video ...
+&lt;/video&gt;
+</code></pre>
+    <hr />
+
+    <h3>Optional API</h3>
+    * You can set this option using constructor.
+
+    <h4>setDriver</h4>
+    Choose REST or XML-RPC approach to use YouTube API.
+<pre><code>
+    $youtube-&gt;setDriver($driver);
+  </code></pre>
+    <div>The argument, $driver, has to be either "rest" or "xmlrpc". When set $driver "xmlrpc", you need XML_RPC2 installed.</div>
+    <h4>setResponseFormat</h4>
+    Choose SimpleXMLElement or array to get the response of the YouTube API.
+    <pre><code>
+    $youtube-&gt;setResponseFormat($responseFormat);
+    </code></pre>
+    <div>The argument, $responseFormat, has to be either "object" or "array".</div>
+
+    <h4>setUseCache</h4>
+    Choose using cache or not.
+    <pre><code>
+    $youtube-&gt;setUseCache($useCache, [$cacheOptions]);
+    </code></pre>
+    <div>The argument, $userCache, has to be boolean. If $userCache is true, Services_YouTube uses Cache_Lite. If you want to set the Cache_Lite option, set $cacheOptions.</div>
+    <h2>Examples</h2>
+    <h3>listFeatured, listFavoriteVideos, listByTag, listByUser sample.</h3>
+    <pre><code>
+    $dev_id = "YOUR_DEV_ID";
+    $user_id = "USER_ID";
+    $tag = "TAG";
+    $youtube = new Services_YouTube($dev_id, array('usesCache' =&gt; true));
+    $videos = $youtube-&gt;listFeatured();
+    // $videos = $youtube-&gt;listFavoriteVideos($user_id);
+    // $videos = $youtube-&gt;listByTag($tag);
+    // $videos = $youtube-&gt;listByUser($user_id);
+    print "&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;\n";
+    foreach ($videos-&gt;xpath('//video') as $i =&gt; $video) {
+      print "&lt;img src='{$video-&gt;thumbnail_url}' alt='{$video-&gt;title}' /&gt;\n";
+      print "&lt;a href='{$video-&gt;url}'&gt;URL&lt;/a&gt;&lt;br /&gt;\n";
+    }
+    print "&lt;/body&gt;&lt;/html&gt;";
+    </code></pre>
+    <h3>getProfile</h3>
+    <pre><code>
+    $dev_id = "YOUR_DEV_ID";
+    $user_id = "USER_ID";
+    $youtube = new Services_YouTube($dev_id, array('usesCache' =&gt; true));
+    $user = $youtube-&gt;getProfile($user_id);
+    print "&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;\n";
+    $profile = $user-&gt;user_profile;
+    print "{$profile-&gt;first_name} {$profile-&gt;last_name} :({$profile-&gt;video_watch_count} Wathced.)\n";
+    print "&lt;/body&gt;&lt;/html&gt;";
+    </code></pre>
+    <h3>listFriends</h3>
+    <pre><code>
+    $dev_id = "YOUR_DEV_ID";
+    $user_id = "USER_ID";
+    $youtube = new Services_YouTube($dev_id, array('usesCache' =&gt; true));
+    $users = $youtube-&gt;listFriends($user_id);
+    print "&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;\n";
+    foreach ($users-&gt;xpath('//friend') as $i =&gt; $friend) {
+      print "{$friend-&gt;user} : Upload: {$friend-&gt;video_upload_count}";
+    }
+    print "&lt;/body&gt;&lt;/html&gt;";
+    </code></pre>
+    <h3>getDetails</h3>
+    <pre><code>
+    $dev_id = "YOUR_DEV_ID";
+    $video_id = "VIDEO_ID";
+    $youtube = new Services_YouTube($dev_id, array('usesCache' =&gt; true));
+    $video = $youtube-&gt;getDetails($video_id);
+    $details = $video-&gt;video_details;
+    print "&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;\n";
+    print "{$details-&gt;title} : ({$details-&gt;tags}) : RATE: {$details-&gt;rating_avg} in {$detials-&gt;rating_count}";
+    print "&lt;img src='{$details-&gt;thumbnail_url}' alt={$details-&gt;title}&gt;&lt;hr /&gt;&lt;hr /&gt;";
+    foreach ($details-&gt;xpath('//comment') as $i =&gt; $comment) {
+      print "{$comment-&gt;author} : {$comment-&gt;text}&lt;hr /&gt;";
+    }
+    print "&lt;/body&gt;&lt;/html&gt;";
+    </code></pre>
+  </body>
+</html>
