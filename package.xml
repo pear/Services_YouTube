@@ -15,7 +15,7 @@
   </maintainers>
  <release>
   <version>0.1.3</version>
-  <date>2006-09-07</date>
+  <date>2006-09-16</date>
   <license>PHP License</license>
   <state>alpha</state>
   <notes>Fixed the conditional vote requests
@@ -412,12 +412,6 @@
      <file role="doc" name="example.php">
       <replace from="@PEAR-VER@" to="version" type="package-info"/>
      </file>
-     <file role="doc" name="tutorial.php">
-      <replace from="@PEAR-VER@" to="version" type="package-info"/>
-     </file>
-     <file role="doc" name="tutorial.phps">
-      <replace from="@PEAR-VER@" to="version" type="package-info"/>
-     </file>
     </dir> <!-- /examples -->
     <dir name="YouTube">
      <file role="php" name="Exception.php">
@@ -462,7 +456,7 @@
    </release>
    <release>
     <version>0.1.3</version>
-    <date>2006-09-07</date>
+    <date>2006-09-16</date>
     <license>PHP License</license>
     <state>alpha</state>
     <notes>- Removed unnecessary docblock.

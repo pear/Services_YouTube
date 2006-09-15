@@ -13,8 +13,8 @@
   <email>ganchiku@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2006-09-07</date>
- <time>01:42:27</time>
+ <date>2006-09-16</date>
+ <time>01:04:15</time>
  <version>
   <release>0.1.3</release>
   <api>0.1.0</api>
@@ -410,12 +410,6 @@
     <file name="example.php" role="doc">
      <tasks:replace from="@PEAR-VER@" to="version" type="package-info" />
     </file>
-    <file name="tutorial.php" role="doc">
-     <tasks:replace from="@PEAR-VER@" to="version" type="package-info" />
-    </file>
-    <file name="tutorial.phps" role="doc">
-     <tasks:replace from="@PEAR-VER@" to="version" type="package-info" />
-    </file>
    </dir> <!-- /examples -->
    <dir name="YouTube">
     <file name="Exception.php" role="php">
@@ -508,7 +502,7 @@
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2006-09-07</date>
+   <date>2006-09-16</date>
    <license uri="http://www.php.net/license">PHP License</license>
    <notes>
   - Removed unnecessary docblock.
