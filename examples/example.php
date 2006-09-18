@@ -104,7 +104,7 @@ function main()
 {
     try {
         if (isset($_REQUEST['tag'])) {
-            $videos = getTaggedVideos(urlencode($_REQUEST['tag']), 1);
+            $videos = getTaggedVideos($_REQUEST['tag'], 1);
         } else {
             $videos = getFeaturedVideos();
         }
