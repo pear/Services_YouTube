@@ -14,8 +14,8 @@
   </maintainer>
   </maintainers>
  <release>
-  <version>0.1.3</version>
-  <date>2006-09-16</date>
+  <version>0.1.4</version>
+  <date>2006-10-01</date>
   <license>PHP License</license>
   <state>alpha</state>
   <notes>Fixed the conditional vote requests
@@ -413,6 +413,14 @@
       <replace from="@PEAR-VER@" to="version" type="package-info"/>
      </file>
     </dir> <!-- /examples -->
+    <dir name="tests">
+     <file role="test" name="AllTests.php">
+      <replace from="@PEAR-VER@" to="version" type="package-info"/>
+     </file>
+     <file role="test" name="YouTubeTest.php">
+      <replace from="@PEAR-VER@" to="version" type="package-info"/>
+     </file>
+    </dir> <!-- /tests -->
     <dir name="YouTube">
      <file role="php" name="Exception.php">
       <replace from="@PEAR-VER@" to="version" type="package-info"/>
@@ -460,11 +468,19 @@
     <license>PHP License</license>
     <state>alpha</state>
     <notes>- Removed unnecessary docblock.
-  - Removed string &quot;Exception :&quot; to avoid redundancy.
-  - Removed Services_YouTube_Exception Class in Services/YouTube/Exception.php
-  - Fixed private vars and methods to protected to allow class extension.
-  - Fixed define state, and use const instead.
-  - Fixed spelling. (developper to developer, RespnseFormat to ResponseFormat.
+- Removed string &quot;Exception :&quot; to avoid redundancy.
+- Removed Services_YouTube_Exception Class in Services/YouTube/Exception.php
+- Fixed private vars and methods to protected to allow class extension.
+- Fixed define state, and use const instead.
+- Fixed spelling. (developper to developer, RespnseFormat to ResponseFormat.
+    </notes>
+   </release>
+   <release>
+    <version>0.1.4</version>
+    <date>2006-10-01</date>
+    <license>PHP License</license>
+    <state>alpha</state>
+    <notes>- Added Unit Tests
     </notes>
    </release>
  </changelog>

@@ -17,7 +17,7 @@
  * @package    Services_YouTube
  * @author     Shin Ohno <ganchiku@gmail.com>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    0.1.3 $Id$
+ * @version    0.1.4 $Id$
  * @see        http://www.youtube.com/dev
  * @since      0.1
  */
@@ -31,7 +31,7 @@ require_once 'Services/YouTube/Exception.php';
  * Services_YouTube
  *
  * @package Services_YouTube
- * @version 0.1.3
+ * @version 0.1.4
  * @author Shin Ohno <ganchiku@gmail.com>
  */
 class Services_YouTube

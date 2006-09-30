@@ -4,15 +4,10 @@ require_once 'PEAR/PackageFileManager2.php';
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 unlink('package.xml');
 
-$releaseVersion = '0.1.3';
+$releaseVersion = '0.1.4';
 $apiVersion = '0.1.0';
 $changelog = '
-  - Removed unnecessary docblock.
-  - Removed string "Exception :" to avoid redundancy.
-  - Removed Services_YouTube_Exception Class in Services/YouTube/Exception.php
-  - Fixed private vars and methods to protected to allow class extension.
-  - Fixed define state, and use const instead.
-  - Fixed spelling. (developper to developer, RespnseFormat to ResponseFormat.
+  - Added Unit Tests
   ';
 $notes = 'Fixed the conditional vote requests';
 $packagexml = new PEAR_PackageFileManager2();
@@ -25,7 +20,7 @@ $packagexml->setOptions(array('filelistgenerator' => 'file',
       'changelogoldtonew' => true,
       'changelognotes' => $changelog,
       'exceptions' => array('ChangeLog' => 'doc'),
-      'dir_roles' => array('examples' => 'doc', 'docs' => 'doc')));
+      'dir_roles' => array('examples' => 'doc', 'docs' => 'doc', 'tests' => 'test')));
 $packagexml->setPackageType('php');
 $packagexml->addRelease();
 $packagexml->setChannel('pear.php.net');
