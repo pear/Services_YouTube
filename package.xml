@@ -15,10 +15,10 @@
   </maintainers>
  <release>
   <version>0.1.4</version>
-  <date>2006-10-01</date>
+  <date>2006-10-04</date>
   <license>PHP License</license>
   <state>alpha</state>
-  <notes>Fixed the conditional vote requests
+  <notes>Added Unit Tests
   </notes>
   <deps>
    <dep type="php" rel="ge" version="5.1.0" optional="no"/>
@@ -477,10 +477,11 @@
    </release>
    <release>
     <version>0.1.4</version>
-    <date>2006-10-01</date>
+    <date>2006-10-04</date>
     <license>PHP License</license>
     <state>alpha</state>
     <notes>- Added Unit Tests
+  - Removed my personal YouTube DEV_ID from example.php
     </notes>
    </release>
  </changelog>

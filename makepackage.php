@@ -8,8 +8,9 @@ $releaseVersion = '0.1.4';
 $apiVersion = '0.1.0';
 $changelog = '
   - Added Unit Tests
+  - Removed my personal YouTube DEV_ID from example.php
   ';
-$notes = 'Fixed the conditional vote requests';
+$notes = 'Added Unit Tests';
 $packagexml = new PEAR_PackageFileManager2();
 $packagexml->setOptions(array('filelistgenerator' => 'file',
       'packagefile' => 'package2.xml',

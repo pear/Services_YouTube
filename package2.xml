@@ -13,8 +13,8 @@
   <email>ganchiku@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2006-10-01</date>
- <time>03:06:02</time>
+ <date>2006-10-04</date>
+ <time>08:59:46</time>
  <version>
   <release>0.1.4</release>
   <api>0.1.0</api>
@@ -24,7 +24,7 @@
   <api>alpha</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>Fixed the conditional vote requests</notes>
+ <notes>Added Unit Tests</notes>
  <contents>
   <dir baseinstalldir="Services" name="/">
    <dir name="docs">
@@ -528,10 +528,11 @@
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2006-10-01</date>
+   <date>2006-10-04</date>
    <license uri="http://www.php.net/license">PHP License</license>
    <notes>
   - Added Unit Tests
+  - Removed my personal YouTube DEV_ID from example.php
   </notes>
   </release>
  </changelog>
