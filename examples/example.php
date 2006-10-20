@@ -113,6 +113,7 @@ function main()
         print '<hr>';
         print '<div>Here is the sample using my dev id.</div>';
         print '<a href="http://www.unchiku.com/example.php">Featured List</a>';
+        print "error";
         exit;
     }
     $table = getVideoTable($videos);

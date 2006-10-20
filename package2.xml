@@ -13,10 +13,10 @@
   <email>ganchiku@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2006-10-04</date>
- <time>08:59:46</time>
+ <date>2006-10-20</date>
+ <time>12:18:50</time>
  <version>
-  <release>0.1.4</release>
+  <release>0.2.0</release>
   <api>0.1.0</api>
  </version>
  <stability>
@@ -24,7 +24,10 @@
   <api>alpha</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>Added Unit Tests</notes>
+ <notes>
+  - Added errorHandlerCallback in Services_YouTube_Exception class.
+  - Added set_error_hander in constructor of Services_YouTube class.
+  </notes>
  <contents>
   <dir baseinstalldir="Services" name="/">
    <dir name="docs">
@@ -530,9 +533,23 @@
    </stability>
    <date>2006-10-04</date>
    <license uri="http://www.php.net/license">PHP License</license>
+   <notes>- Added Unit Tests
+- Removed my personal YouTube DEV_ID from example.php</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.2.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2006-10-20</date>
+   <license uri="http://www.php.net/license">PHP License</license>
    <notes>
-  - Added Unit Tests
-  - Removed my personal YouTube DEV_ID from example.php
+  - Added errorHandlerCallback in Services_YouTube_Exception class.
+  - Added set_error_hander in constructor of Services_YouTube class.
   </notes>
   </release>
  </changelog>

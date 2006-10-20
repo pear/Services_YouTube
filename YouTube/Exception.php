@@ -30,5 +30,23 @@ require_once 'PEAR/Exception.php';
  */
 class Services_YouTube_Exception extends PEAR_Exception
 {
+    /**
+     * errorHandlerCallback
+     *
+     * @param int $code
+     * @param string $string
+     * @param string $file
+     * @param int $line
+     * @param array $context
+     * @static
+     * @access public
+     * throw Services_YouTube_Exception
+     */
+    public static function errorHandlerCallback($code, $string, $file, $line, $context) {
+        $e = new self($string, $code);
+        $e->line = $line;
+        $e->file = $file;
+        throw $e;
+    }
 }
 ?>

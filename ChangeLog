@@ -1,7 +1,14 @@
 $Id$
 see package.xml for newer changlogs
+2006-10-20  Shin Ohno<ganchiku@gmail.com>
+  * VERSION: version 0.2.0 (alpha) released.
+
+  - Added errorHandlerCallback in Services_YouTube_Exception class.
+  - Added set_error_hander in constructor of Services_YouTube class.
+
 2006-10-01  Shin Ohno<ganchiku@gmail.com>
   * VERSION: version 0.1.4 (alpha) released.
+
   - Added Unit Tests.
   - Removed my personal YouTube DEV_ID from example.php
 
@@ -10,7 +17,7 @@ see package.xml for newer changlogs
 
   - Removed unnecessary docblock.
   - Removed string "Exception :" to avoid redundancy.
-  - Moved Services_YouTube_Exception Class in Services/YouTube/Exception.php
+  - Moved Services_YouTube_Exception class in Services/YouTube/Exception.php
   - Fixed private vars and methods to protected to allow class extension.
   - Fixed define state, and use const instead.
   - Fixed spelling. (developper to developer, RespnseFormat to ResponseFormat.

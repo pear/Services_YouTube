@@ -17,7 +17,7 @@
  * @package    Services_YouTube
  * @author     Shin Ohno <ganchiku@gmail.com>
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    0.1.4 $Id$
+ * @version    0.2.0 $Id$
  * @see        http://www.youtube.com/dev
  * @since      0.1
  */
@@ -31,7 +31,7 @@ require_once 'Services/YouTube/Exception.php';
  * Services_YouTube
  *
  * @package Services_YouTube
- * @version 0.1.4
+ * @version 0.2.0
  * @author Shin Ohno <ganchiku@gmail.com>
  */
 class Services_YouTube
@@ -40,7 +40,7 @@ class Services_YouTube
     /**
      * Version of this package
      */
-    const VERSION = '0.1.3';
+    const VERSION = '0.2.0';
 
     /**
      * URL of the YouTube Server
@@ -109,6 +109,7 @@ class Services_YouTube
      */
     public function __construct($developerId, $options = array())
     {
+        set_error_handler(array('Services_YouTube_Exception', 'errorHandlerCallback'), E_ALL);
         $this->developerId = $developerId;
         $availableOptions = array('useCache', 'cacheOptions', 'responseFormat', 'driver');
         foreach ($options as $key => $value) {
@@ -282,7 +283,9 @@ class Services_YouTube
     // }}}
     // {{{ protected
     /**
-     *  Send XML_RPC Request and unserialize the response xml to the array
+     *  Send Request either rest or xmlrpc approach, and return simplexml_element of the response.
+     *  When $this->usesCaches is true, use Cache_Lite the response xml.
+     *  If $this->responseFormat is "array", return array, instead simplexml_element.
      *
      * @param string $method
      * @param array $parameters
@@ -423,7 +426,6 @@ class Services_YouTube
         }
         return $return;
     }
-
     // }}}
 }
 

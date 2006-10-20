@@ -14,11 +14,12 @@
   </maintainer>
   </maintainers>
  <release>
-  <version>0.1.4</version>
-  <date>2006-10-04</date>
+  <version>0.2.0</version>
+  <date>2006-10-20</date>
   <license>PHP License</license>
   <state>alpha</state>
-  <notes>Added Unit Tests
+  <notes>- Added errorHandlerCallback in Services_YouTube_Exception class.
+  - Added set_error_hander in constructor of Services_YouTube class.
   </notes>
   <deps>
    <dep type="php" rel="ge" version="5.1.0" optional="no"/>
@@ -481,7 +482,16 @@
     <license>PHP License</license>
     <state>alpha</state>
     <notes>- Added Unit Tests
-  - Removed my personal YouTube DEV_ID from example.php
+- Removed my personal YouTube DEV_ID from example.php
+    </notes>
+   </release>
+   <release>
+    <version>0.2.0</version>
+    <date>2006-10-20</date>
+    <license>PHP License</license>
+    <state>alpha</state>
+    <notes>- Added errorHandlerCallback in Services_YouTube_Exception class.
+  - Added set_error_hander in constructor of Services_YouTube class.
     </notes>
    </release>
  </changelog>
