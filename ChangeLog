@@ -4,7 +4,7 @@ see package.xml for newer changlogs
   * VERSION: version 0.2.0 (alpha) released.
 
   - Added errorHandlerCallback in Services_YouTube_Exception class.
-  - Added set_error_hander in constructor of Services_YouTube class.
+  - Added set_error_hander in sendRequest method.
 
 2006-10-01  Shin Ohno<ganchiku@gmail.com>
   * VERSION: version 0.1.4 (alpha) released.

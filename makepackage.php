@@ -8,7 +8,7 @@ $releaseVersion = '0.2.0';
 $apiVersion = '0.1.0';
 $changelog = '
   - Added errorHandlerCallback in Services_YouTube_Exception class.
-  - Added set_error_hander in constructor of Services_YouTube class.
+  - Added set_error_hander in sendRequest method.
   ';
 $notes = $changelog;
 $packagexml = new PEAR_PackageFileManager2();

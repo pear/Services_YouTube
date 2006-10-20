@@ -109,7 +109,6 @@ class Services_YouTube
      */
     public function __construct($developerId, $options = array())
     {
-        set_error_handler(array('Services_YouTube_Exception', 'errorHandlerCallback'), E_ALL);
         $this->developerId = $developerId;
         $availableOptions = array('useCache', 'cacheOptions', 'responseFormat', 'driver');
         foreach ($options as $key => $value) {
@@ -295,6 +294,7 @@ class Services_YouTube
      */
     protected function sendRequest($method, $parameters)
     {
+        set_error_handler(array('Services_YouTube_Exception', 'errorHandlerCallback'), E_ALL);
         // Use Cache_Lite
         if ($this->useCache) {
             require_once 'Cache/Lite.php';
@@ -302,7 +302,8 @@ class Services_YouTube
             $cache = new Cache_Lite($this->cacheOptions);
 
             if ($response = $cache->get($cacheID)) {
-                return $this->parseResponse($response);
+                $data = $this->parseResponse($response);
+                restore_error_handler();
             }
         }
 
@@ -320,7 +321,9 @@ class Services_YouTube
                 throw new Services_YouTube_Exception('Can not write cache');
             }
         }
-        return $this->parseResponse($response);
+        $data = $this->parseResponse($response);
+        restore_error_handler();
+        return $data;
     }
 
     /**

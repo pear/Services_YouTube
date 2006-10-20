@@ -19,7 +19,7 @@
   <license>PHP License</license>
   <state>alpha</state>
   <notes>- Added errorHandlerCallback in Services_YouTube_Exception class.
-  - Added set_error_hander in constructor of Services_YouTube class.
+  - Added set_error_hander in sendRequest method.
   </notes>
   <deps>
    <dep type="php" rel="ge" version="5.1.0" optional="no"/>
@@ -491,7 +491,7 @@
     <license>PHP License</license>
     <state>alpha</state>
     <notes>- Added errorHandlerCallback in Services_YouTube_Exception class.
-  - Added set_error_hander in constructor of Services_YouTube class.
+  - Added set_error_hander in sendRequest method.
     </notes>
    </release>
  </changelog>
