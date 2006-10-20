@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL|E_STRICT);
-
+require_once 'Services/YouTube.php';
 define('MAX_COLS', 5);
 
 define('DEV_ID', 'YOUR_DEV_ID');
