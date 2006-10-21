@@ -294,41 +294,33 @@ class Services_YouTube
      */
     protected function sendRequest($prefix, $method, $parameters)
     {
-        try {
-            // Use Cache_Lite
-            if ($this->useCache) {
-                require_once 'Cache/Lite.php';
-                $cacheID = md5($prefix . $method . serialize($parameters));
-                $cache = new Cache_Lite($this->cacheOptions);
+        // Use Cache_Lite
+        if ($this->useCache) {
+            require_once 'Cache/Lite.php';
+            $cacheID = md5($prefix . $method . serialize($parameters));
+            $cache = new Cache_Lite($this->cacheOptions);
 
-                if ($response = $cache->get($cacheID)) {
-                    $data = $this->parseResponse($response);
-                    restore_error_handler();
-                }
+            if ($response = $cache->get($cacheID)) {
+                return $this->parseResponse($response);
             }
-
-            if ($this->driver == 'rest') {
-                $response = $this->useRest($prefix . $method, $parameters);
-            } else if ($this->driver == 'xmlrpc') {
-                $response = $this->useXMLRPC($prefix, $method, $parameters);
-            } else {
-                throw new Services_YouTube_Exception('Driver has to be "xmlrpc" or "rest"');
-            }
-
-            // Use Cache_Lite
-            if ($this->useCache and isset($cache)) {
-                if (!$cache->save($response, $cacheID)) {
-                    throw new Services_YouTube_Exception('Can not write cache');
-                }
-            }
-            set_error_handler(array('Services_YouTube_Exception', 'errorHandlerCallback'), E_ALL);
-            $data = $this->parseResponse($response);
-            restore_error_handler();
-            return $data;
-        } catch (Services_YouTube_Exception $e) {
-            restore_error_handler();
-            throw $e;
         }
+
+        if ($this->driver == 'rest') {
+            $response = $this->useRest($prefix . $method, $parameters);
+        } else if ($this->driver == 'xmlrpc') {
+            $response = $this->useXMLRPC($prefix, $method, $parameters);
+        } else {
+            throw new Services_YouTube_Exception('Driver has to be "xmlrpc" or "rest"');
+        }
+        $data = $this->parseResponse($response);
+
+        // Use Cache_Lite
+        if ($this->useCache and isset($cache)) {
+            if (!$cache->save($response, $cacheID)) {
+                throw new Services_YouTube_Exception('Can not write cache');
+            }
+        }
+        return $data;
     }
 
     /**
@@ -381,7 +373,7 @@ class Services_YouTube
         $options['prefix'] = $prefix;
         try {
             $client = XML_RPC2_Client::create('http://' . self::URL . self::XMLRPC_PATH, $options);
-            $result = $client->get_profile($parameters);
+            $result = $client->$method($parameters);
         } catch (XML_RPC2_FaultException $e) {
             throw new Services_YouTube_Exception('XML_RPC Failed :' . $e->getMessage());
         } catch (Exception $e) {
@@ -400,11 +392,18 @@ class Services_YouTube
      */
     protected function parseResponse($response)
     {
-        if (!$data = simplexml_load_string($response)) {
-            throw new Services_YouTube_Exception('Parsing Failed. Response string is invalid');
-        }
-        if ($this->responseFormat == 'array') {
-            $data = $this->forArray($data);
+        set_error_handler(array('Services_YouTube_Exception', 'errorHandlerCallback'), E_ALL);
+        try {
+            if (!$data = simplexml_load_string($response)) {
+                throw new Services_YouTube_Exception('Parsing Failed. Response string is invalid');
+            }
+            if ($this->responseFormat == 'array') {
+                $data = $this->forArray($data);
+            }
+            restore_error_handler();
+        } catch (Services_YouTube_Exception $e) {
+            restore_error_handler();
+            throw $e;
         }
         return $data;
     }
