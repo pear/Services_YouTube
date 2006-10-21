@@ -76,11 +76,22 @@ class YouTubeTest extends PHPUnit2_Framework_TestCase
             $this->assertEquals('Shin', $profile->first_name);
             $this->assertEquals('Ohno', $profile->last_name);
 
+            // Array Response
             $youtube->setResponseFormat('array');
             $data = $youtube->getProfile('ganchiku');
             $profile = $data['user_profile'];
             $this->assertEquals('Shin', $profile['first_name']);
             $this->assertEquals('Ohno', $profile['last_name']);
+
+            // XML_RPC driver
+            $youtube->setDriver('xmlrpc');
+            $youtube->setUseCache(false);
+            $youtube->setResponseFormat('object');
+            $data = $youtube->getProfile('ganchiku');
+            $profile = $data->user_profile;
+            $this->assertEquals('Shin', $profile->first_name);
+            $this->assertEquals('Ohno', $profile->last_name);
+
         } catch (Services_YouTube_Exception $e) {
             print $e;
         }
@@ -95,9 +106,19 @@ class YouTubeTest extends PHPUnit2_Framework_TestCase
             $videos = $data->xpath('//video');
             $this->assertTrue(is_array($videos));
 
+            // Array Response
             $youtube->setResponseFormat('array');
             $data = $youtube->listFavoriteVideos('ganchiku');
             $this->assertTrue(is_array($data['video_list']));
+
+            // XML_RPC driver
+            $youtube->setDriver('xmlrpc');
+            $youtube->setUseCache(false);
+            $youtube->setResponseFormat('object');
+            $data = $youtube->listFavoriteVideos('ganchiku');
+            $videos = $data->xpath('//video');
+            $this->assertTrue(is_array($videos));
+
         } catch (Services_YouTube_Exception $e) {
             print $e;
         }
@@ -112,9 +133,19 @@ class YouTubeTest extends PHPUnit2_Framework_TestCase
             // i have no friends... orz...
             $this->assertEquals(0, $data->friend_list);
 
+            // Array Response
             $youtube->setResponseFormat('array');
             $data = $youtube->listFriends('ganchiku');
             $this->assertTrue(array_key_exists('friend_list', $data));
+
+            // XML_RPC driver
+            $youtube->setDriver('xmlrpc');
+            $youtube->setUseCache(false);
+            $youtube->setResponseFormat('object');
+            $data = $youtube->listFriends('ganchiku');
+            $this->assertTrue(isset($data->friend_list));
+            $this->assertEquals(0, $data->friend_list);
+
         } catch (Services_YouTube_Exception $e) {
             print $e;
         }
@@ -131,10 +162,20 @@ class YouTubeTest extends PHPUnit2_Framework_TestCase
             $video = $data->video_details;
             $this->assertEquals('YouTube', $video->author);
 
+            // Array Response
             $youtube->setResponseFormat('array');
             $data = $youtube->getDetails('rdwz7QiG0lk');
             $video = $data['video_details'];
             $this->assertEquals('YouTube', $video['author']);
+
+            // XML_RPC driver
+            $youtube->setDriver('xmlrpc');
+            $youtube->setUseCache(false);
+            $youtube->setResponseFormat('object');
+            $data = $youtube->getDetails('rdwz7QiG0lk');
+            $video = $data->video_details;
+            $this->assertEquals('YouTube', $video->author);
+
         } catch (Services_YouTube_Exception $e) {
             print $e;
         }
@@ -149,9 +190,18 @@ class YouTubeTest extends PHPUnit2_Framework_TestCase
             $videos = $data->xpath('//video');
             $this->assertTrue(is_array($videos));
 
+            // Array Response
             $youtube->setResponseFormat('array');
             $data = $youtube->listByTag('YouTube');
             $this->assertTrue(is_array($data['video_list']));
+
+            // XML_RPC driver
+            $youtube->setDriver('xmlrpc');
+            $youtube->setUseCache(false);
+            $youtube->setResponseFormat('object');
+            $data = $youtube->listByTag('YouTube');
+            $videos = $data->xpath('//video');
+            $this->assertTrue(is_array($videos));
 
             //  Hmm... need to integrate pager parameters
         } catch (Services_YouTube_Exception $e) {
@@ -168,9 +218,17 @@ class YouTubeTest extends PHPUnit2_Framework_TestCase
             // i have not uploaded any videos... orz...
             $this->assertEquals(0, $data->video_list);
 
+            // Array Response
             $youtube->setResponseFormat('array');
             $data = $youtube->listByUser('ganchiku');
             $this->assertNull($data['video_list']);
+
+            // XML_RPC driver
+            $youtube->setDriver('xmlrpc');
+            $youtube->setUseCache(false);
+            $youtube->setResponseFormat('object');
+            $data = $youtube->listByUser('ganchiku');
+            $this->assertEquals(0, $data->video_list);
 
         } catch (Services_YouTube_Exception $e) {
             print $e;
@@ -186,9 +244,19 @@ class YouTubeTest extends PHPUnit2_Framework_TestCase
             $videos = $data->xpath('//video');
             $this->assertEquals(25, count($videos));
 
+            // Array Response
             $youtube->setResponseFormat('array');
             $data = $youtube->listFeatured();
             $this->assertEquals(25, count($data['video_list']['video']));
+
+            // XML_RPC driver
+            $youtube->setDriver('xmlrpc');
+            $youtube->setUseCache(false);
+            $youtube->setResponseFormat('object');
+            $data = $youtube->listFeatured();
+            $videos = $data->xpath('//video');
+            $this->assertEquals(25, count($videos));
+
         } catch (Services_YouTube_Exception $e) {
             print $e;
         }
