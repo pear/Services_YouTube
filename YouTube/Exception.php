@@ -26,6 +26,7 @@ require_once 'PEAR/Exception.php';
  * are raised.
  *
  * @package Services_YouTube
+ * @version @package_version@
  * @author Shin OHNO <ganchiku@gmail.com>
  */
 class Services_YouTube_Exception extends PEAR_Exception
