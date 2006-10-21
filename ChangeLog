@@ -7,7 +7,7 @@ see package.xml for newer changlogs
   - Added try catch in parseRequest method, and After catched Services_YouTube_Exception, set restore_error_handler.
   - Fixed many bugs in userXMLRPC method.
   - Changed the arguments when calling sendRequest. Split the prefix and method.
-  - Fixed Bug#9917, and added the test Bug9917.php
+  - Fixed Bug #9917, and added the test Bug9917.php
   - Added more Unit Tests for xmlrpc driver.
 
 2006-10-20  Shin Ohno<ganchiku@gmail.com>

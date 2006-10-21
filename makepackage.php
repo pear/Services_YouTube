@@ -5,7 +5,7 @@ PEAR::setErrorHandling(PEAR_ERROR_DIE);
 unlink('package.xml');
 
 $releaseVersion = '0.2.1';
-$apiVersion = '0.1.0';
+$apiVersion = $releaseVersion;
 $changelog = '
   - Moved set_error_handler to parseResponse method from sendRequest.
   - Added try catch in parseRequest method, and After catched Services_YouTube_Exception, set restore_error_handler.
@@ -55,7 +55,8 @@ $packagexml->addPackageDepWithChannel('optional', 'Cache_Lite', 'pear.php.net');
 $packagexml->addPackageDepWithChannel('optional', 'XML_RPC2', 'pear.php.net');
 $packagexml->addMaintainer('lead', 'shin', 'Shin Ohno', 'ganchiku@gmail.com');
 $packagexml->setLicense('PHP License', 'http://www.php.net/license');
-$packagexml->addGlobalReplacement('package-info', '@PEAR-VER@', 'version');
+$packagexml->addReplacement('YouTube.php', 'package-info', '@package_version@', 'version');
+$packagexml->addReplacement('YouTube/Exception.php', 'package-info', '@package_version@', 'version');
 $packagexml->generateContents();
 $pkg = &$packagexml->exportCompatiblePackageFile1();
 if (isset($_GET['make']) || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
