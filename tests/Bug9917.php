@@ -22,7 +22,7 @@ class Bug9917 extends PHPUnit2_Framework_TestCase
             $user = $youtube->getProfile($user_id);
             $this->assertEquals('Shin', $user->user_profile->first_name);
             $this->assertEquals('Ohno', $user->user_profile->last_name);
-        } catch (Selenium_Exception $e) {
+        } catch (Services_YouTube_Exception $e) {
             echo $e;
         }
     }
