@@ -7,9 +7,12 @@ unlink('package.xml');
 $releaseVersion = '0.2.1';
 $apiVersion = '0.1.0';
 $changelog = '
-  -  Moved set_error_handler before calling parseResponse method.
-  -  Fixed many bugs in userXMLRPC method.
-  -  Changed the arguments when calling sendRequest. Split the prefix and method.
+  - Moved set_error_handler to parseResponse method from sendRequest.
+  - Added try catch in parseRequest method, and After catched Services_YouTube_Exception, set restore_error_handler.
+  - Fixed many bugs in userXMLRPC method.
+  - Changed the arguments when calling sendRequest. Split the prefix and method.
+  - Fixed Bug #9917, and added the test Bug9917.php
+  - Added more Unit Tests for xmlrpc driver.
   ';
 $notes = $changelog;
 $packagexml = new PEAR_PackageFileManager2();
@@ -32,7 +35,17 @@ $packagexml->setAPIVersion($apiVersion);
 $packagexml->setReleaseStability('alpha');
 $packagexml->setAPIStability('alpha');
 $packagexml->setSummary('PHP Client for YouTube API');
-$packagexml->setDescription('PHP Client for YouTube API');
+$packagexml->setDescription('Services_YouTube is a client for YouTube Developer APIs.
+
+    YouTube is a place for people to engage in new ways with video by sharing, commenting on, and viewing videos. YouTube Developer APIs currently allow read-only access to key parts of the YouTube video respository and user community.
+
+    Using Services_YouTube, you can configure
+    A: REST or XML-RPC approach to use YouTube Developer APIs.
+    B: caching the response of the YouTube Developer APIs.
+    C: SimpleXMLElement or array for the response of the YouTube Developer APIs.
+
+    About the YouTube Developer APIs:
+    http://www.youtube.com/dev');
 $packagexml->setNotes($notes);
 $packagexml->setPhpDep('5.1.0');
 $packagexml->setPearinstallerDep('1.4.0a12');
