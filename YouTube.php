@@ -286,6 +286,7 @@ class Services_YouTube
      *  When $this->usesCaches is true, use Cache_Lite the response xml.
      *  If $this->responseFormat is "array", return array, instead simplexml_element.
      *
+     * @param string $prefix
      * @param string $method
      * @param array $parameters
      * @access protected
@@ -370,7 +371,7 @@ class Services_YouTube
     {
         require_once 'XML/RPC2/Client.php';
 
-        $options['prefix'] = $prefix;
+        $options = array('prefix' => $prefix);
         try {
             $client = XML_RPC2_Client::create('http://' . self::URL . self::XMLRPC_PATH, $options);
             $result = $client->$method($parameters);
