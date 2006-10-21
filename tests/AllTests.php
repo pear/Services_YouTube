@@ -26,6 +26,7 @@ class AllTests
         $suite = new PHPUnit2_Framework_TestSuite('Services');
         /** Add testsuites, if there is. */
         $suite->addTestSuite('YouTubeTest');
+        $suite->addTestSuite('Bug9917');
 
         return $suite;
     }

@@ -183,7 +183,7 @@ class Services_YouTube
     {
         $parameters = array('dev_id' => $this->developerId,
             'user'   => $user);
-        return $this->sendRequest('youtube.users.get_profile', $parameters);
+        return $this->sendRequest('youtube.users.', 'get_profile', $parameters);
     }
     /**
      * Lists a user's favorite videos.
@@ -197,7 +197,7 @@ class Services_YouTube
     {
         $parameters = array('dev_id' => $this->developerId,
             'user'   => $user);
-        return $this->sendRequest('youtube.users.list_favorite_videos', $parameters);
+        return $this->sendRequest('youtube.users.', 'list_favorite_videos', $parameters);
     }
     /**
      * Lists a user's friends.
@@ -211,7 +211,7 @@ class Services_YouTube
     {
         $parameters = array('dev_id' => $this->developerId,
             'user'   => $user);
-        return $this->sendRequest('youtube.users.list_friends', $parameters);
+        return $this->sendRequest('youtube.users.', 'list_friends', $parameters);
     }
     // }}}
     // {{{ videos
@@ -227,7 +227,7 @@ class Services_YouTube
     {
         $parameters = array('dev_id'   => $this->developerId,
             'video_id' => $videoId);
-        return $this->sendRequest('youtube.videos.get_details', $parameters);
+        return $this->sendRequest('youtube.videos.', 'get_details', $parameters);
     }
     /**
      * Lists all videos that have the specified tag.
@@ -249,7 +249,7 @@ class Services_YouTube
             'tag'    => $tag,
             'page' => $page,
             'per_page' => $perPage);
-        return $this->sendRequest('youtube.videos.list_by_tag', $parameters);
+        return $this->sendRequest('youtube.videos.', 'list_by_tag', $parameters);
     }
 
     /**
@@ -264,7 +264,7 @@ class Services_YouTube
     {
         $parameters = array('dev_id' => $this->developerId,
             'user'   => $user);
-        return $this->sendRequest('youtube.videos.list_by_user', $parameters);
+        return $this->sendRequest('youtube.videos.', 'list_by_user', $parameters);
     }
 
     /**
@@ -277,7 +277,7 @@ class Services_YouTube
     public function listFeatured()
     {
         $parameters = array('dev_id' => $this->developerId);
-        return $this->sendRequest('youtube.videos.list_featured', $parameters);
+        return $this->sendRequest('youtube.videos.', 'list_featured', $parameters);
     }
     // }}}
     // {{{ protected
@@ -292,38 +292,43 @@ class Services_YouTube
      * @return SimpleXMLObject or Array on success, error object on failure
      * @throws Services_YouTube_Exception
      */
-    protected function sendRequest($method, $parameters)
+    protected function sendRequest($prefix, $method, $parameters)
     {
-        set_error_handler(array('Services_YouTube_Exception', 'errorHandlerCallback'), E_ALL);
-        // Use Cache_Lite
-        if ($this->useCache) {
-            require_once 'Cache/Lite.php';
-            $cacheID = md5($method . serialize($parameters));
-            $cache = new Cache_Lite($this->cacheOptions);
+        try {
+            // Use Cache_Lite
+            if ($this->useCache) {
+                require_once 'Cache/Lite.php';
+                $cacheID = md5($prefix . $method . serialize($parameters));
+                $cache = new Cache_Lite($this->cacheOptions);
 
-            if ($response = $cache->get($cacheID)) {
-                $data = $this->parseResponse($response);
-                restore_error_handler();
+                if ($response = $cache->get($cacheID)) {
+                    $data = $this->parseResponse($response);
+                    restore_error_handler();
+                }
             }
-        }
 
-        if ($this->driver == 'rest') {
-            $response = $this->useRest($method, $parameters);
-        } else if ($this->driver == 'xmlrpc') {
-            $response = $this->useXMLRPC($method, $parameters);
-        } else {
-            throw new Services_YouTube_Exception('Driver has to be "xmlrpc" or "rest"');
-        }
-
-        // Use Cache_Lite
-        if ($this->useCache and isset($cache)) {
-            if (!$cache->save($response, $cacheID)) {
-                throw new Services_YouTube_Exception('Can not write cache');
+            if ($this->driver == 'rest') {
+                $response = $this->useRest($prefix . $method, $parameters);
+            } else if ($this->driver == 'xmlrpc') {
+                $response = $this->useXMLRPC($prefix, $method, $parameters);
+            } else {
+                throw new Services_YouTube_Exception('Driver has to be "xmlrpc" or "rest"');
             }
+
+            // Use Cache_Lite
+            if ($this->useCache and isset($cache)) {
+                if (!$cache->save($response, $cacheID)) {
+                    throw new Services_YouTube_Exception('Can not write cache');
+                }
+            }
+            set_error_handler(array('Services_YouTube_Exception', 'errorHandlerCallback'), E_ALL);
+            $data = $this->parseResponse($response);
+            restore_error_handler();
+            return $data;
+        } catch (Services_YouTube_Exception $e) {
+            restore_error_handler();
+            throw $e;
         }
-        $data = $this->parseResponse($response);
-        restore_error_handler();
-        return $data;
     }
 
     /**
@@ -362,23 +367,25 @@ class Services_YouTube
     /**
      * Use XML-RPC approach.
      *
+     * @param string $prefix
      * @param string $method
      * @param array $parameters
      * @access protected
      * @return string
      * @throws Services_YouTube_Exception
      */
-    protected function useXMLRPC($method, $parameters)
+    protected function useXMLRPC($prefix, $method, $parameters)
     {
         require_once 'XML/RPC2/Client.php';
-        $parameters['method'] = $method;
+
+        $options['prefix'] = $prefix;
         try {
-            $client = XML_RPC2_Client::create('http://' . self::URL . self::XMLRPC_PATH, $parameters);
-            $result = $client->info('XML_RPC2');
+            $client = XML_RPC2_Client::create('http://' . self::URL . self::XMLRPC_PATH, $options);
+            $result = $client->get_profile($parameters);
         } catch (XML_RPC2_FaultException $e) {
-            throw new Services_YouTube_Exception('XML_RPC Failed :' . $e->getFaultString());
+            throw new Services_YouTube_Exception('XML_RPC Failed :' . $e->getMessage());
         } catch (Exception $e) {
-            throw new Services_YouTube_Exception($e->getFaultString());
+            throw new Services_YouTube_Exception($e->getMessage());
         }
         return $result;
     }

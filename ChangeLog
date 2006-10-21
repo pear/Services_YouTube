@@ -1,5 +1,18 @@
 $Id$
 see package.xml for newer changlogs
+2006-10-21  Shin Ohno<ganchiku@gmail.com>
+  * VERSION: version 0.2.1 (alpha) released.
+
+  -  Moved set_error_handler before calling parseResponse method.
+  -  Fixed many bugs in userXMLRPC method.
+  -  Changed the arguments when calling sendRequest. Split the prefix and method.
+
+2006-10-20  Shin Ohno<ganchiku@gmail.com>
+  * VERSION: version 0.2.0 (alpha) released.
+
+  - Added try catch in sendRequest method
+  - After catched Services_YouTube_Exception, set restore_error_handler.
+
 2006-10-20  Shin Ohno<ganchiku@gmail.com>
   * VERSION: version 0.2.0 (alpha) released.
 

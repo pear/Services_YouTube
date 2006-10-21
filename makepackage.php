@@ -4,11 +4,12 @@ require_once 'PEAR/PackageFileManager2.php';
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 unlink('package.xml');
 
-$releaseVersion = '0.2.0';
+$releaseVersion = '0.2.1';
 $apiVersion = '0.1.0';
 $changelog = '
-  - Added errorHandlerCallback in Services_YouTube_Exception class.
-  - Added set_error_hander in sendRequest method.
+  -  Moved set_error_handler before calling parseResponse method.
+  -  Fixed many bugs in userXMLRPC method.
+  -  Changed the arguments when calling sendRequest. Split the prefix and method.
   ';
 $notes = $changelog;
 $packagexml = new PEAR_PackageFileManager2();
