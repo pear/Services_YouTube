@@ -4,7 +4,7 @@
 error_reporting(E_ALL|E_STRICT);
 require_once '../YouTube.php';
 
-class YouTubeTest extends PHPUnit2_Framework_TestCase
+class YouTubeTest extends PHPUnit_Framework_TestCase
 {
     const DEV_ID = 'E88fqlcDtlM';
 

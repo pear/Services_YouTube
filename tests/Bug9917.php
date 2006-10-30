@@ -1,8 +1,8 @@
 <?php
 require_once '../YouTube.php';
-require_once 'PHPUnit2/Framework/TestCase.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
-class Bug9917 extends PHPUnit2_Framework_TestCase
+class Bug9917 extends PHPUnit_Framework_TestCase
 {
     const DEV_ID = 'E88fqlcDtlM';
 
