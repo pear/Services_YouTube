@@ -84,7 +84,7 @@ function openVideo(video_id) {
 <body>
 <h1>This is sample</h1>
 <div>Here is the sample using my dev id.</div>
-<a href="http://www.unchiku.com/example.php">Featured List</a>
+<a href="http://www.ganchiku.com/playgrounds/example.php">Featured List</a>
 <hr />
 <div>
 <form action="example.php" method="get">
@@ -112,7 +112,7 @@ function main()
         print $e;
         print '<hr>';
         print '<div>Here is the sample using my dev id.</div>';
-        print '<a href="http://www.unchiku.com/example.php">Featured List</a>';
+        print '<a href="http://www.ganchiku.com/playgrounds/example.php">Featured List</a>';
         print "error";
         exit;
     }
