@@ -118,6 +118,41 @@ class Services_YouTube
         }
     }
     // }}}
+    // {{{ getter methods
+
+    /**
+     * Return array of available time range
+     *
+     * @access public
+     * @return void
+     */
+    public function getAvailableTimeRanges()
+    {
+        return array('day', 'week', 'month', 'all');
+    }
+
+    /**
+     * Return array of available category array which key is category id and value is category name.
+     *
+     * @access public
+     * @return void
+     */
+    public function getAvailableCategories()
+    {
+        return array('1' => 'Arts & Animation',
+            '2' => 'Autos & Vehicles',
+            '23' => 'Comedy',
+            '24' => 'Entertainment',
+            '10' => 'Music',
+            '25' => 'News & Blogs',
+            '22' => 'People',
+            '15' => 'Pets & Animals',
+            '26' => 'Science & Technology',
+            '17' => 'Sports',
+            '19' => 'Travel & Places',
+            '20' => 'Video Games');
+    }
+    // }}}
 // {{{ setter methods
    /**
      * Choose which driver to use(XML-RPC or REST)
@@ -185,6 +220,7 @@ class Services_YouTube
             'user'   => $user);
         return $this->sendRequest('youtube.users.', 'get_profile', $parameters);
     }
+
     /**
      * Lists a user's favorite videos.
      *
@@ -229,6 +265,7 @@ class Services_YouTube
             'video_id' => $videoId);
         return $this->sendRequest('youtube.videos.', 'get_details', $parameters);
     }
+
     /**
      * Lists all videos that have the specified tag.
      *
@@ -250,6 +287,106 @@ class Services_YouTube
             'page' => $page,
             'per_page' => $perPage);
         return $this->sendRequest('youtube.videos.', 'list_by_tag', $parameters);
+    }
+
+    /**
+     * Lists all videos that match any of the specified tags.
+     *
+     * @param string $tag the tag to search for
+     * @param string $page the "page" of results you want to retrieve (e.g. 1, 2, 3) (default 1)
+     * @param string $perPage the number of results you want to retrieve per page (default 20, maximum 100)
+     *
+     * @access public
+     * @return array on success, error object on failure
+     * @throws Services_YouTube_Exception
+     */
+    public function listByRelated($tag, $page = 1, $perPage = 20)
+    {
+        if ($perPage > self::VIDEO_PER_PAGE_MAX) {
+            throw new Services_YouTube_Exception('The Maximum of the perPage is ' . self::VIDEO_PER_PAGE_MAX);
+        }
+        $parameters = array('dev_id' => $this->developerId,
+            'tag'    => $tag,
+            'page' => $page,
+            'per_page' => $perPage);
+        return $this->sendRequest('youtube.videos.', 'list_by_related', $parameters);
+    }
+
+    /**
+     * Lists all videos in the specified playlist.
+     *
+     * @param string $id the id of the playlist
+     * @param string $page the "page" of results you want to retrieve (e.g. 1, 2, 3) (default 1)
+     * @param string $perPage the number of results you want to retrieve per page (default 20, maximum 100)
+     *
+     * @access public
+     * @return array on success, error object on failure
+     * @throws Services_YouTube_Exception
+     */
+    public function listByPlaylist($id, $page = 1, $perPage = 20)
+    {
+        if ($perPage > self::VIDEO_PER_PAGE_MAX) {
+            throw new Services_YouTube_Exception('The Maximum of the perPage is ' . self::VIDEO_PER_PAGE_MAX);
+        }
+        $parameters = array('dev_id' => $this->developerId,
+            'id'    => $tag,
+            'page' => $page,
+            'per_page' => $perPage);
+        return $this->sendRequest('youtube.videos.', 'list_by_playlist', $parameters);
+    }
+
+    /**
+     * Lists all videos in the specified time_range.
+     *
+     * @param string $timeRange the time_range to list by (e.g. 'day', 'week', 'month', 'all')
+     *
+     * @access public
+     * @return array on success, error object on failure
+     * @throws Services_YouTube_Exception
+     */
+    public function listByPopular($timeRange = 'all')
+    {
+        $availables = $this->getAvailableTimeRanges();
+        // TODO Message
+        if (!in_array($timeRange, $availables)) {
+            throw new Services_YouTube_Exception('$timeRange must be either "day" "week", "month", "all".');
+        }
+
+        $parameters = array('dev_id' => $this->developerId,
+            'time_range'    => $timeRange);
+        return $this->sendRequest('youtube.videos.', 'list_by_popular', $parameters);
+    }
+
+    /**
+     * Lists all videos that have the specified category id and tag.
+     *
+     * @param string $categoryId the category id to search in
+     * @param string $tag the tag to search for
+     * @param string $page the "page" of results you want to retrieve (e.g. 1, 2, 3) (default 1)
+     * @param string $perPage the number of results you want to retrieve per page (default 20, maximum 100)
+     *
+     * @access public
+     * @return array on success, error object on failure
+     * @throws Services_YouTube_Exception
+     */
+    public function listByCategoryAndTag($categoryId, $tag, $page = 1, $perPage = 20)
+    {
+        $availables = array_keys($this->getAvailableCategories());
+        // TODO Message
+        if (!in_array($categoryId, $availables)) {
+            throw new Services_YouTube_Exception('');
+        }
+
+        if ($perPage > self::VIDEO_PER_PAGE_MAX) {
+            throw new Services_YouTube_Exception('The Maximum of the perPage is ' . self::VIDEO_PER_PAGE_MAX);
+        }
+
+        $parameters = array('dev_id' => $this->developerId,
+            'categoryId' => $categoryId,
+            'tag'    => $tag,
+            'page' => $page,
+            'per_page' => $perPage);
+        return $this->sendRequest('youtube.videos.', 'list_by_category_and_tag', $parameters);
     }
 
     /**
@@ -280,6 +417,7 @@ class Services_YouTube
         return $this->sendRequest('youtube.videos.', 'list_featured', $parameters);
     }
     // }}}
+
     // {{{ protected
     /**
      *  Send Request either rest or xmlrpc approach, and return simplexml_element of the response.

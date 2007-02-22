@@ -20,8 +20,8 @@ class Bug9917 extends PHPUnit_Framework_TestCase
             $youtube->setDriver('xmlrpc');
 
             $user = $youtube->getProfile($user_id);
-            $this->assertEquals('Shin', $user->user_profile->first_name);
-            $this->assertEquals('Ohno', $user->user_profile->last_name);
+            $this->assertEquals('Shin', (string)$user->user_profile->first_name);
+            $this->assertEquals('Ohno', (string)$user->user_profile->last_name);
         } catch (Services_YouTube_Exception $e) {
             echo $e;
         }

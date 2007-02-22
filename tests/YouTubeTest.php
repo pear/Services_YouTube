@@ -66,6 +66,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
     // }}}
 
 // {{{ user API
+/*
     public function testGetProfile()
     {
         try {
@@ -73,8 +74,8 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $youtube->setUseCache(true);
             $data = $youtube->getProfile('ganchiku');
             $profile = $data->user_profile;
-            $this->assertEquals('Shin', $profile->first_name);
-            $this->assertEquals('Ohno', $profile->last_name);
+            $this->assertEquals('Shin', (string)$profile->first_name);
+            $this->assertEquals('Ohno', (string)$profile->last_name);
 
             // Array Response
             $youtube->setResponseFormat('array');
@@ -89,8 +90,8 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $youtube->setResponseFormat('object');
             $data = $youtube->getProfile('ganchiku');
             $profile = $data->user_profile;
-            $this->assertEquals('Shin', $profile->first_name);
-            $this->assertEquals('Ohno', $profile->last_name);
+            $this->assertEquals('Shin', (string)$profile->first_name);
+            $this->assertEquals('Ohno', (string)$profile->last_name);
 
         } catch (Services_YouTube_Exception $e) {
             print $e;
@@ -131,7 +132,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $data = $youtube->listFriends('ganchiku');
             $this->assertTrue(isset($data->friend_list));
             // i have no friends... orz...
-            $this->assertEquals(0, $data->friend_list);
+            $this->assertEquals(0, (int)$data->friend_list);
 
             // Array Response
             $youtube->setResponseFormat('array');
@@ -144,7 +145,12 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $youtube->setResponseFormat('object');
             $data = $youtube->listFriends('ganchiku');
             $this->assertTrue(isset($data->friend_list));
-            $this->assertEquals(0, $data->friend_list);
+            $this->assertEquals(0, (int)$data->friend_list);
+
+            // Pager Response // Not Supported yet?
+//            $youtube->setDriver('rest');
+//            $data = $youtube->listFriends('youtube');
+
 
         } catch (Services_YouTube_Exception $e) {
             print $e;
@@ -160,7 +166,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $youtube->setUseCache(true);
             $data = $youtube->getDetails('rdwz7QiG0lk');
             $video = $data->video_details;
-            $this->assertEquals('YouTube', $video->author);
+            $this->assertEquals('YouTube', (string)$video->author);
 
             // Array Response
             $youtube->setResponseFormat('array');
@@ -174,7 +180,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $youtube->setResponseFormat('object');
             $data = $youtube->getDetails('rdwz7QiG0lk');
             $video = $data->video_details;
-            $this->assertEquals('YouTube', $video->author);
+            $this->assertEquals('YouTube', (string)$video->author);
 
         } catch (Services_YouTube_Exception $e) {
             print $e;
@@ -203,12 +209,58 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $videos = $data->xpath('//video');
             $this->assertTrue(is_array($videos));
 
-            //  Hmm... need to integrate pager parameters
+            // Pager Response
+            $data = $youtube->listByTag('YouTube', 1, 20);
+            $videos = $data->xpath('//video');
+            $this->assertTrue(is_array($videos));
+
+            $data = $youtube->listByTag('YouTube', 2, 10);
+            $videos = $data->xpath('//video');
+            $this->assertTrue(is_array($videos));
+
+        } catch (Services_YouTube_Exception $e) {
+            print $e;
+        }
+    }
+*/
+    public function testListByRelated()
+    {
+        try {
+            $youtube = new Services_YouTube(self::DEV_ID);
+            $youtube->setUseCache(true);
+            $data = $youtube->listByRelated('YouTube');
+            $videos = $data->xpath('//video');
+            $this->assertTrue(is_array($videos));
+
+            // Array Response
+            $youtube->setResponseFormat('array');
+            $data = $youtube->listByRelated('YouTube');
+            $this->assertTrue(is_array($data['video_list']));
+
+            // XML_RPC driver
+            $youtube->setDriver('xmlrpc');
+            $youtube->setUseCache(false);
+            $youtube->setResponseFormat('object');
+            $data = $youtube->listByRelated('YouTube');
+            $videos = $data->xpath('//video');
+            $this->assertTrue(is_array($videos));
+
+            // Pager Response
+            $data = $youtube->listByRelated('YouTube', 1, 20);
+            $videos = $data->xpath('//video');
+            $this->assertTrue(is_array($videos));
+
+            $data = $youtube->listByrelated('YouTube', 2, 10);
+            $videos = $data->xpath('//video');
+            var_dump(count($videos));
+            $this->assertTrue(is_array($videos));
+
         } catch (Services_YouTube_Exception $e) {
             print $e;
         }
     }
 
+/*
     public function testListByUser()
     {
         try {
@@ -216,7 +268,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $youtube->setUseCache(true);
             $data = $youtube->listByUser('ganchiku');
             // i have not uploaded any videos... orz...
-            $this->assertEquals(0, $data->video_list);
+            $this->assertEquals(0, (int)$data->video_list);
 
             // Array Response
             $youtube->setResponseFormat('array');
@@ -228,7 +280,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listByUser('ganchiku');
-            $this->assertEquals(0, $data->video_list);
+            $this->assertEquals(0, (int)$data->video_list);
 
         } catch (Services_YouTube_Exception $e) {
             print $e;
@@ -261,6 +313,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             print $e;
         }
     }
+ */
     // }}}
 }
 
