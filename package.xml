@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Services_YouTube</name>
  <channel>pear.php.net</channel>
  <summary>PHP Client for YouTube API</summary>
@@ -8,20 +8,20 @@
   <name>Shin Ohno</name>
   <user>shin</user>
   <email>ganchiku@gmail.com</email>
-  <active>no</active>
+  <active>yes</active>
  </lead>
  <date>2009-01-05</date>
- <time>17:13:32</time>
+ <time>17:18:02</time>
  <version>
-  <release>0.2.1</release>
-  <api>0.2.0</api>
+  <release>0.2.2</release>
+  <api>0.1.0</api>
  </version>
  <stability>
   <release>alpha</release>
   <api>alpha</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>Updated to package 2.0</notes>
+ <notes>Package 2.0</notes>
  <contents>
   <dir baseinstalldir="Services" name="/">
    <file baseinstalldir="Services" md5sum="831a8dfcab410b33eb19bb53ff7e246c" name="docs/tutorials.html" role="doc">
@@ -441,7 +441,7 @@
     <min>5.1.0</min>
    </php>
    <pearinstaller>
-    <min>1.4.0b1</min>
+    <min>1.4.0a12</min>
    </pearinstaller>
    <extension>
     <name>simplexml</name>
@@ -507,7 +507,7 @@
   <release>
    <version>
     <release>0.1.3</release>
-    <api>0.1.3</api>
+    <api>0.1.0</api>
    </version>
    <stability>
     <release>alpha</release>
@@ -525,7 +525,7 @@
   <release>
    <version>
     <release>0.1.4</release>
-    <api>0.1.4</api>
+    <api>0.1.0</api>
    </version>
    <stability>
     <release>alpha</release>
@@ -539,7 +539,7 @@
   <release>
    <version>
     <release>0.2.0</release>
-    <api>0.2.0</api>
+    <api>0.1.0</api>
    </version>
    <stability>
     <release>alpha</release>
@@ -548,12 +548,30 @@
    <date>2006-10-20</date>
    <license uri="http://www.php.net/license">PHP License</license>
    <notes>- Added errorHandlerCallback in Services_YouTube_Exception class.
-  - Added set_error_hander in sendRequest method.</notes>
+- Added set_error_hander in sendRequest method.</notes>
   </release>
   <release>
    <version>
     <release>0.2.1</release>
-    <api>0.2.0</api>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2006-10-21</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>- Moved set_error_handler to parseResponse method from sendRequest.
+- Added try catch in parseRequest method, and After catched Services_YouTube_Exception, set restore_error_handler.
+- Fixed many bugs in userXMLRPC method.
+- Changed the arguments when calling sendRequest. Split the prefix and method.
+- Fixed Bug#9917, and added the test Bug9917.php
+- Added more Unit Tests for xmlrpc driver.</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.2.2</release>
+    <api>0.1.0</api>
    </version>
    <stability>
     <release>alpha</release>
@@ -561,7 +579,7 @@
    </stability>
    <date>2009-01-05</date>
    <license uri="http://www.php.net/license">PHP License</license>
-   <notes>Updated to package 2.0</notes>
+   <notes>Package 2.0</notes>
   </release>
  </changelog>
 </package>
