@@ -1,5 +1,5 @@
 <?php
-require_once '../YouTube.php';
+require_once 'Services/YouTube.php';
 require_once 'PHPUnit/Framework/TestCase.php';
 
 class Bug9917 extends PHPUnit_Framework_TestCase

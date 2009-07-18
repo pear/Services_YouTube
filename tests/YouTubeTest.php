@@ -2,7 +2,7 @@
 // All tests are require Cache_Lite.
 
 error_reporting(E_ALL|E_STRICT);
-require_once '../YouTube.php';
+require_once 'Services/YouTube.php';
 
 class YouTubeTest extends PHPUnit_Framework_TestCase
 {

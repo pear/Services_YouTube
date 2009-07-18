@@ -8,7 +8,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'AllTests::main');
-    chdir(dirname(__FILE__));
 }
 
 require_once 'PHPUnit/Framework/TestSuite.php';
