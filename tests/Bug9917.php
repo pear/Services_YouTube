@@ -6,10 +6,6 @@ class Bug9917 extends PHPUnit_Framework_TestCase
 {
     const DEV_ID = 'E88fqlcDtlM';
 
-    public function __construct($name)
-    {
-        parent::__construct($name);
-    }
     public function test9917()
     {
         try {
