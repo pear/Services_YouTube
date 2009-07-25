@@ -252,7 +252,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
 
             $data = $youtube->listByrelated('YouTube', 2, 10);
             $videos = $data->xpath('//video');
-            var_dump(count($videos));
+
             $this->assertTrue(is_array($videos));
 
         } catch (Services_YouTube_Exception $e) {
