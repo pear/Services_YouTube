@@ -9,25 +9,6 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
     const DEV_ID = 'E88fqlcDtlM';
 
     // {{{ setter tests using Mock class
-    public function testSetDriver()
-    {
-        try {
-            $youtube = new Services_YouTubeMock(self::DEV_ID);
-            $this->assertEquals('rest', $youtube->getDriver());
-
-            $youtube->setDriver('xmlrpc');
-            $this->assertEquals('xmlrpc', $youtube->getDriver());
-
-            $youtube->setDriver('rest');
-            $this->assertEquals('rest', $youtube->getDriver());
-
-            // throw Exception
-            $youtube->setDriver("throw exception");
-        } catch (Services_YouTube_Exception $e) {
-            $this->assertEquals('Driver has to be "xmlrpc" or "rest"', $e->getMessage());
-        }
-    }
-
     public function testSetResponseFormat()
     {
         try {
@@ -85,7 +66,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertEquals('Ohno', $profile['last_name']);
 
             // XML_RPC driver
-            $youtube->setDriver('xmlrpc');
+//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->getProfile('ganchiku');
@@ -113,7 +94,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(is_array($data['video_list']));
 
             // XML_RPC driver
-            $youtube->setDriver('xmlrpc');
+//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listFavoriteVideos('ganchiku');
@@ -140,7 +121,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(array_key_exists('friend_list', $data));
 
             // XML_RPC driver
-            $youtube->setDriver('xmlrpc');
+//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listFriends('ganchiku');
@@ -175,7 +156,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertEquals('YouTube', $video['author']);
 
             // XML_RPC driver
-            $youtube->setDriver('xmlrpc');
+//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->getDetails('rdwz7QiG0lk');
@@ -202,7 +183,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(is_array($data['video_list']));
 
             // XML_RPC driver
-            $youtube->setDriver('xmlrpc');
+//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listByTag('YouTube');
@@ -238,7 +219,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(is_array($data['video_list']));
 
             // XML_RPC driver
-            $youtube->setDriver('xmlrpc');
+//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listByRelated('YouTube');
@@ -276,7 +257,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertNull($data['video_list']);
 
             // XML_RPC driver
-            $youtube->setDriver('xmlrpc');
+            //$youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listByUser('ganchiku');
@@ -302,7 +283,7 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(25, count($data['video_list']['video']));
 
             // XML_RPC driver
-            $youtube->setDriver('xmlrpc');
+//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listFeatured();

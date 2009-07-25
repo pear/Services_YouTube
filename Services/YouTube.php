@@ -25,6 +25,7 @@
  * Services_YouTube exception class
  */
 require_once 'Services/YouTube/Exception.php';
+require_once 'Services/YouTube/Adapter.php';
 
 require_once 'HTTP/Request2.php';
 
@@ -50,15 +51,7 @@ class Services_YouTube
      * URL of the YouTube Server
      */
     const URL = 'www.youtube.com';
-    /**
-     * URI of the XML RPC path
-     */
-    const XMLRPC_PATH = '/api2_xmlrpc';
 
-    /**
-     * URI of the REST path
-     */
-    const REST_PATH = '/api2_rest';
 
     /**
      * Max number of the movie list per page
@@ -74,14 +67,6 @@ class Services_YouTube
      * @access public
      */
     protected $developerId = null;
-
-    /**
-     * driver
-     *
-     * @var string
-     * @access protected
-     */
-    protected $driver = 'rest';
 
     /**
      * Use cache
@@ -103,6 +88,8 @@ class Services_YouTube
      * @access protected
      */
     protected $responseFormat = 'object';
+
+    protected $adapter;
     // }}}
 
     // {{{ constructor
@@ -110,26 +97,38 @@ class Services_YouTube
      * Constructor
      *
      * @param string  $developerId Developer ID
-     * @param mixed[] $options     useCache, cacheOptions, responseFormat, driver
+     * @param Services_YouTube_Adapter  One of Services_YouTube_Adapter_REST, Services_YouTube_Adapter_XML_RPC
+     * @param mixed[] $options     useCache, cacheOptions, responseFormat
      *
      * @access public
      * @return void
      */
-    public function __construct($developerId, $options = array())
+    public function __construct($developerId, Services_YouTube_Adapter $adapter = null, $options = array())
     {
         $this->developerId = $developerId;
 
         $availableOptions = array('useCache', 'cacheOptions',
-                                  'responseFormat', 'driver');
+                                  'responseFormat');
 
         foreach ($options as $key => $value) {
             if (in_array($key, $availableOptions)) {
                 $this->$key = $value;
             }
         }
+
+        if (empty($adapter)) {
+            require_once 'Services/YouTube/Adapter/REST.php';
+            $adapter = new Services_YouTube_Adapter_REST();
+        }
+
+        $this->setAdapter($adapter);
     }
     // }}}
     // {{{ getter methods
+
+    public function getAdapter() {
+        return $this->adapter;
+    }
 
     /**
      * Return array of available time range
@@ -167,22 +166,8 @@ class Services_YouTube
     // }}}
 
     // {{{ setter methods
-    /**
-     * Choose which driver to use(XML-RPC or REST)
-     *
-     * @param string $driver Driver name (xmlrpc, rest)
-     *
-     * @access public
-     * @return void
-     * @throws Services_YouTube_Exception
-     */
-    public function setDriver($driver)
-    {
-        if ($driver == 'xmlrpc' or $driver == 'rest') {
-            $this->driver = $driver;
-        } else {
-            throw new Services_YouTube_Exception('Driver has to be "xmlrpc" or "rest"');
-        }
+    public function setAdapter(Services_YouTube_Adapter $adapter) {
+        $this->adapter = $adapter;
     }
 
     /**
@@ -494,14 +479,7 @@ class Services_YouTube
             }
         }
 
-        if ($this->driver == 'rest') {
-            $response = $this->useRest($prefix . $method, $parameters);
-        } else if ($this->driver == 'xmlrpc') {
-            $response = $this->useXMLRPC($prefix, $method, $parameters);
-        } else {
-            $msg = 'Driver has to be "xmlrpc" or "rest"';
-            throw new Services_YouTube_Exception($msg);
-        }
+        $response = $this->adapter->execute($prefix, $method, $parameters);
         $data = $this->parseResponse($response);
 
         // Use Cache_Lite
@@ -511,63 +489,6 @@ class Services_YouTube
             }
         }
         return $data;
-    }
-
-    /**
-     * Use REST approach.
-     *
-     * @param string $method     Method
-     * @param array  $parameters Arguments
-     *
-     * @access protected
-     * @return string
-     * @throws Services_YouTube_Exception
-     */
-    protected function useRest($method, $parameters)
-    {
-
-
-        $url = 'http://' . self::URL . self::REST_PATH . '?method=' . $method;
-        foreach ($parameters as $key => $val) {
-            $url .= '&' . $key . '=' . urlencode($val);
-        }
-
-        $request = new HTTP_Request2($url);
-        $request->setMethod(HTTP_Request2::METHOD_POST);
-
-        $response = $request->send();
-
-        return $response->getBody();
-    }
-
-    /**
-     * Use XML-RPC approach.
-     *
-     * @param string $prefix     Unknown
-     * @param string $method     Method to call
-     * @param array  $parameters Method args
-     *
-     * @access protected
-     * @return string
-     * @throws Services_YouTube_Exception
-     */
-    protected function useXMLRPC($prefix, $method, $parameters)
-    {
-        include_once 'XML/RPC2/Client.php';
-
-        $options = array('prefix' => $prefix);
-        try {
-            $url = 'http://' . self::URL . self::XMLRPC_PATH;
-
-            $client = XML_RPC2_Client::create($url, $options);
-            $result = $client->$method($parameters);
-        } catch (XML_RPC2_FaultException $e) {
-            $msg = 'XML_RPC Failed :' . $e->getMessage();
-            throw new Services_YouTube_Exception($msg);
-        } catch (Exception $e) {
-            throw new Services_YouTube_Exception($e->getMessage());
-        }
-        return $result;
     }
 
     /**
