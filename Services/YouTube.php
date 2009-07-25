@@ -26,6 +26,8 @@
  */
 require_once 'Services/YouTube/Exception.php';
 
+require_once 'HTTP/Request2.php';
+
 /**
  * Services_YouTube
  *
@@ -523,31 +525,19 @@ class Services_YouTube
      */
     protected function useRest($method, $parameters)
     {
-        if (!function_exists('curl_init')) {
-            throw new Services_YouTube_Exception('cannot use curl exntensions');
-        }
-        if (!$ch = curl_init()) {
-            throw new Services_YouTube_Exception('Unable to setup curl');
-        }
+
+
         $url = 'http://' . self::URL . self::REST_PATH . '?method=' . $method;
         foreach ($parameters as $key => $val) {
             $url .= '&' . $key . '=' . urlencode($val);
         }
 
-        $useragent = 'User-Agent: Service_YouTube: ' . self::VERSION;
+        $request = new HTTP_Request2($url);
+        $request->setMethod(HTTP_Request2::METHOD_POST);
 
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
+        $response = $request->send();
 
-        $result = curl_exec($ch);
-        if (($errno = curl_errno($ch)) != 0) {
-            $msg = 'Curl returned non-null errno ' . $errno .':' . curl_error($ch);
-            throw new Services_YouTube_Exception($msg);
-        }
-        curl_close($ch);
-        return $result;
+        return $response->getBody();
     }
 
     /**
