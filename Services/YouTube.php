@@ -179,7 +179,7 @@ class Services_YouTube
         if ($driver == 'xmlrpc' or $driver == 'rest') {
             $this->driver = $driver;
         } else {
-            throw new Services_YouTube_Exception('Driver is not xmlrpc or rest');
+            throw new Services_YouTube_Exception('Driver has to be "xmlrpc" or "rest"');
         }
     }
 
