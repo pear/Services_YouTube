@@ -4,6 +4,23 @@ require_once 'Services/YouTube/Adapter.php';
 
 class Services_YouTube_Adapter_REST implements Services_YouTube_Adapter {
 
+    protected $request;
+
+    public function __construct(HTTP_Request2 $request = null) {
+        if (empty($request)) {
+            $request = new HTTP_Request2();
+        }   
+
+        $this->setRequest($request);
+    }
+
+    public function setRequest(HTTP_Request2 $request) {
+        $this->request = $request;
+    }
+
+    public function getRequest() {
+        return $this->request;
+    }
 
     /**
      * URI of the REST path
@@ -16,11 +33,14 @@ class Services_YouTube_Adapter_REST implements Services_YouTube_Adapter {
             $url .= '&' . $key . '=' . urlencode($val);
         }
 
-        $request = new HTTP_Request2($url);
+        $request = $this->getRequest();
+        $request->setURL($url);
         $request->setMethod(HTTP_Request2::METHOD_POST);
 
         $response = $request->send();
 
-        return $response->getBody();
+        $body = $response->getBody();
+
+        return $body;
     }
 }
