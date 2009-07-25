@@ -3,6 +3,8 @@
 
 error_reporting(E_ALL|E_STRICT);
 require_once 'Services/YouTube.php';
+require_once 'Services/YouTube/Adapter/REST.php';
+require_once 'Services/YouTube/Adapter/XML_RPC2.php';
 
 class YouTubeTest extends PHPUnit_Framework_TestCase
 {
@@ -46,12 +48,20 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
 
     // }}}
 
-// {{{ user API
-/*
-    public function testGetProfile()
+    // {{{ user API
+
+    public static function adapters() {
+        return array(array(new Services_YouTube_Adapter_REST()),
+                     array(new Services_YouTube_Adapter_XML_RPC2()));
+    }
+
+    /**
+     * @dataProvider adapters() 
+     */
+    public function testGetProfile($adapter)
     {
         try {
-            $youtube = new Services_YouTube(self::DEV_ID);
+            $youtube = new Services_YouTube(self::DEV_ID, $adapter);
             $youtube->setUseCache(true);
             $data = $youtube->getProfile('ganchiku');
             $profile = $data->user_profile;
@@ -66,7 +76,6 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertEquals('Ohno', $profile['last_name']);
 
             // XML_RPC driver
-//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->getProfile('ganchiku');
@@ -79,10 +88,14 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
         }
 
     }
-    public function testListFavoriteVideos()
+
+    /**
+     * @dataProvider adapters() 
+     */
+    public function testListFavoriteVideos($adapter)
     {
         try {
-            $youtube = new Services_YouTube(self::DEV_ID);
+            $youtube = new Services_YouTube(self::DEV_ID, $adapter);
             $youtube->setUseCache(true);
             $data = $youtube->listFavoriteVideos('ganchiku');
             $videos = $data->xpath('//video');
@@ -93,8 +106,6 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $data = $youtube->listFavoriteVideos('ganchiku');
             $this->assertTrue(is_array($data['video_list']));
 
-            // XML_RPC driver
-//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listFavoriteVideos('ganchiku');
@@ -105,10 +116,14 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             print $e;
         }
     }
-    public function testListFriends()
+
+    /**
+     * @dataProvider adapters() 
+     */
+    public function testListFriends($adapter)
     {
         try {
-            $youtube = new Services_YouTube(self::DEV_ID);
+            $youtube = new Services_YouTube(self::DEV_ID, $adapter);
             $youtube->setUseCache(true);
             $data = $youtube->listFriends('ganchiku');
             $this->assertTrue(isset($data->friend_list));
@@ -120,8 +135,6 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $data = $youtube->listFriends('ganchiku');
             $this->assertTrue(array_key_exists('friend_list', $data));
 
-            // XML_RPC driver
-//            $youtube->setDriver('xmlrpc');
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listFriends('ganchiku');
@@ -129,7 +142,6 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(0, (int)$data->friend_list);
 
             // Pager Response // Not Supported yet?
-//            $youtube->setDriver('rest');
 //            $data = $youtube->listFriends('youtube');
 
 
@@ -140,10 +152,13 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
     // }}}
 
     // {{{ video API
-    public function testGetDetails()
+    /**
+     * @dataProvider adapters() 
+     */
+    public function testGetDetails($adapter)
     {
         try {
-            $youtube = new Services_YouTube(self::DEV_ID);
+            $youtube = new Services_YouTube(self::DEV_ID, $adapter);
             $youtube->setUseCache(true);
             $data = $youtube->getDetails('rdwz7QiG0lk');
             $video = $data->video_details;
@@ -156,8 +171,6 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertEquals('YouTube', $video['author']);
 
             // XML_RPC driver
-//            $youtube->setDriver('xmlrpc');
-            $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->getDetails('rdwz7QiG0lk');
             $video = $data->video_details;
@@ -168,11 +181,13 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testListByTag()
+    /**
+     * @dataProvider adapters() 
+     */
+    public function testListByTag($adapter)
     {
         try {
-            $youtube = new Services_YouTube(self::DEV_ID);
-            $youtube->setUseCache(true);
+            $youtube = new Services_YouTube(self::DEV_ID, $adapter);
             $data = $youtube->listByTag('YouTube');
             $videos = $data->xpath('//video');
             $this->assertTrue(is_array($videos));
@@ -203,11 +218,14 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             print $e;
         }
     }
-*/
-    public function testListByRelated()
+
+    /**
+     * @dataProvider adapters() 
+     */
+    public function testListByRelated($adapter)
     {
         try {
-            $youtube = new Services_YouTube(self::DEV_ID);
+            $youtube = new Services_YouTube(self::DEV_ID, $adapter);
             $youtube->setUseCache(true);
             $data = $youtube->listByRelated('YouTube');
             $videos = $data->xpath('//video');
@@ -219,8 +237,6 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(is_array($data['video_list']));
 
             // XML_RPC driver
-//            $youtube->setDriver('xmlrpc');
-            $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listByRelated('YouTube');
             $videos = $data->xpath('//video');
@@ -241,11 +257,13 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
         }
     }
 
-/*
-    public function testListByUser()
+    /**
+     * @dataProvider adapters() 
+     */
+    public function testListByUser($adapter)
     {
         try {
-            $youtube = new Services_YouTube(self::DEV_ID);
+            $youtube = new Services_YouTube(self::DEV_ID, $adapter);
             $youtube->setUseCache(true);
             $data = $youtube->listByUser('ganchiku');
             // i have not uploaded any videos... orz...
@@ -268,43 +286,42 @@ class YouTubeTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testListFeatured()
+    /**
+     * @dataProvider adapters() 
+     */
+    public function testListFeatured($adapter)
     {
         try {
-            $youtube = new Services_YouTube(self::DEV_ID);
+            $youtube = new Services_YouTube(self::DEV_ID, $adapter);
             $youtube->setUseCache(true);
             $data = $youtube->listFeatured();
             $videos = $data->xpath('//video');
-            $this->assertEquals(25, count($videos));
+            $this->assertEquals(100, count($videos));
 
             // Array Response
             $youtube->setResponseFormat('array');
             $data = $youtube->listFeatured();
-            $this->assertEquals(25, count($data['video_list']['video']));
+            $this->assertEquals(100, count($data['video_list']['video']));
 
             // XML_RPC driver
-//            $youtube->setDriver('xmlrpc');
+
             $youtube->setUseCache(false);
             $youtube->setResponseFormat('object');
             $data = $youtube->listFeatured();
             $videos = $data->xpath('//video');
-            $this->assertEquals(25, count($videos));
+            $this->assertEquals(100, count($videos));
 
         } catch (Services_YouTube_Exception $e) {
             print $e;
         }
     }
- */
+
     // }}}
 }
 
 // {{{ Mock Class FOR GETTER
 class Services_YouTubeMock extends Services_YouTube
 {
-    public function getDriver()
-    {
-        return $this->driver;
-    }
     public function getResponseFormat()
     {
         return $this->responseFormat;
