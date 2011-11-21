@@ -1,7 +1,6 @@
 <?php
 // All tests are require Cache_Lite.
 
-error_reporting(E_ALL|E_STRICT);
 require_once 'Services/YouTube.php';
 require_once 'Services/YouTube/Adapter/REST.php';
 require_once 'Services/YouTube/Adapter/XML_RPC2.php';
