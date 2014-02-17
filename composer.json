@@ -8,7 +8,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "Services_YouTube": "./"
+            "Services": "./"
         }
     },
     "description": "More info available on: http://pear.php.net/package/Services_YouTube",
@@ -23,9 +23,13 @@
     },
     "type": "library",
     "require": {
-        "pear/pear_exception": "*"
+        "pear/pear_exception": "*",
+        "pear/http_request2": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
+    },
+    "suggest": {
+        "pear/cache_lite": "Install optionally via your project's composer.json"
     }
 }
